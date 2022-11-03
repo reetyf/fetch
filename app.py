@@ -176,5 +176,21 @@ def plot(solution):
     fig.show()
     return fig
 
+@anvil.server.callable
+def point_getter(solution,where_to_search):
+    """ Returns a point.
+    :param solution: the answer to the rectangle problem.
+    :param where_to_search: coordinate to search
+    :return: value at given coordinate
+    """
+    # 3- tuple passed in , numpy array stores data as (depth, row , cols ) or (z, y, x)
+    # for more logic, view readme.
+    z,y,x = where_to_search
+    try:
+        point = solution[z][y][x]
+    except IndexError:
+        return 'n/a'
+    return point
+
 # anvil server will remain open on my personal computer. This enables app interaction.
 anvil.server.wait_forever()
