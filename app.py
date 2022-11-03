@@ -5,9 +5,10 @@ import anvil.server
 import anvil.mpl_util
 import numpy as np
 import plotly.express as px
-import pandas as pd
 
+# connects to anvil app server
 anvil.server.connect("OQH4NZ7ZDKJ6G676PZWGYT4H-6GXUPVRXW6A67APZ")
+
 
 def increment_adder(dims, left_edge_coord, top_edge_coord, increment_x, increment_y):
     """
@@ -23,17 +24,19 @@ def increment_adder(dims, left_edge_coord, top_edge_coord, increment_x, incremen
     xs = []
     for i in range(0, int(dims[0])):
         xs.append(left_edge_coord)
-        left_edge_coord += increment_x
+        left_edge_coord += increment_x # increment left most coordinate by calculated amount
 
     ys = []
     for i in range(0, int(dims[1])):
         ys.append(top_edge_coord)
-        top_edge_coord -= increment_y
+        top_edge_coord -= increment_y # decrement top most coordinate by calculated amount
+
 
     # round
     xs = [round(x, 2) for x in xs]
     ys = [round(y, 2) for y in ys]
 
+    # take cartesian product and reformat for combination
     cartesian_product = list(product(xs, ys))
     xs = np.array([x[0] for x in cartesian_product]).reshape(int(dims[0]), int(dims[1])).T
     ys = np.array([y[1] for y in cartesian_product]).reshape(int(dims[0]), int(dims[1])).T
@@ -112,47 +115,66 @@ def corner_formatter(coord_string):
 
 @anvil.server.callable
 def validate_inputs(x, y, corners):
+    """
+    :param x: int , passed in x value
+    :param y: int , passed in y value
+    :param corners: string of 4 2-tuples, will be parsed
+    :return: 2 tuple - (boolean,string) : False if invalid input, and corresponding text
+    """
     try:
         x = float(x)
     except ValueError:
-        return (False, "Entry must be an integer (ex: 4) or float (ex: 3.2)")
+        return (False, "Entry must be an integer (ex: 4)")
 
     try:
         y = float(y)
     except ValueError:
-        return (False, "Entry must be an integer (ex: 4) or float (ex: 3.2)")
+        return (False, "Entry must be an integer (ex: 4)")
 
-    if(not rectangle_checker(corners)):
+    if (not rectangle_checker(corners)):
         return (False, "Coordinates were invalid, or don't form a rectangle. Please retry.")
-    return True,''
+    return True, ''
+
 
 @anvil.server.callable
 def main(dims, corners):
+    """
+    :param dims: int tuple of dimensions passed in by the user
+    :param corners: string of corners, that will be parsed and made into 4 2-tuples
+    :return: 2-tuple  of solution and response text for the app
+    """
     corners = corner_formatter(corners)
 
     solution = pixel_placer(dims, corners)
 
-    print(solution)
-
     # numpy handles array dim as (stack, rows, columns). In this case (2, dim_y, dim_x). This is counterintuitive
     # but in this numpy representation, the rows are the y-coordinate and the columns are the x-coordinate.
-    print(solution.shape)
+    return (solution,
+            f"The passed in rectangle with dimensions {dims} and corners {corners} has evenly spaced points at the below points. This is not intuitive as printed below, so an attached Plotly Express visualization is displayed.")
 
-    return solution
+
 @anvil.server.callable
 def plot(solution):
+    """
+    :param solution: 3-d array of evenly spaced x,y coordinates
+    :return: fig: the plotly express figure
+    """
+    #unravel each array iteratively and collect x,y points
     x_tuples = solution[0]
-    x_points =[]
+    x_points = []
     for i in x_tuples:
-        for j in range(0,len(i)):
+        for j in range(0, len(i)):
             x_points.append(i[j])
     y_tuples = solution[1]
     y_points = []
     for i in y_tuples:
-        for j in range(0,len(i)):
+        for j in range(0, len(i)):
             y_points.append(i[j])
 
-    fig = px.scatter(x=x_points,y=y_points,title="Illustration of Evenly Spaced Dots for Given Rectangle")
+    # now, collected x,y points are easily passed into a scatterplot...
+    fig = px.scatter(x=x_points, y=y_points, title="Illustration of Evenly Spaced Dots for Given Rectangle")
     fig.show()
     return fig
+
+# anvil server will remain open on my personal computer. This enables app interaction.
 anvil.server.wait_forever()
