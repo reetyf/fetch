@@ -2,7 +2,7 @@
 
 This project was created for the assignment [here](https://fetch-hiring.s3.amazonaws.com/machine-learning-engineer/image-coordinates.html) as a part of [Fetch Rewards](https://www.fetchrewards.com/careers) hiring process.
 
-The application is hosted at this address: https://6GXUPVRXW6A67APZ.anvil.app/BNIXWBZZ5HOB2JUFRCM77ROH. 
+The application is hosted at this address: https://6GXUPVRXW6A67APZ.anvil.app/BNIXWBZZ5HOB2JUFRCM77ROH.
 
 This app's functionality is contingent on a script being run on my personal computer. This should not be an issue as this will be perpetually running, but if for any reason there is an "anvil.server.UplinkDisconnected" Error, please contact me and I will restart the script.
 Instructions for running: 
@@ -17,4 +17,6 @@ This app calculates and displays the coordinates of evenly spaced pixels of a re
 This application and linked script is dynamic - differing user inputs for these values and is able to be rerun in the sample instance. 
 
 
-This app was built with [anvil](anvil.works), a browser based Python web app builder. For posterity purposes, the anvil app code is viewable above. This application is able to interact with a script on my personal computer through the use of [anvil-uplink](https://anvil.works/docs/uplink). Because of this, no requirements for different packages are needed for the client side app users as long as they have the web app link.
+This app was built with [anvil](anvil.works), a browser based Python web app builder. For posterity purposes, the anvil app code is viewable above. This application is able to interact with a script on my personal computer through the use of [anvil-uplink](https://anvil.works/docs/uplink). Because of this, no requirements for different packages are needed for the client side app users as long as they have the web app link. 
+
+There is a consistent error during runtime, which I was unable to quell. It is caused by some interaction from passing the plotly object back to the app server, but is negligible to graph results. 
