@@ -36,7 +36,7 @@ def increment_adder(dims, left_edge_coord, top_edge_coord, increment_x, incremen
     xs = [round(x, 2) for x in xs]
     ys = [round(y, 2) for y in ys]
 
-    # take cartesian product and reformat for combination
+    # take cartesian product and reformat for 3 dimensional stack
     cartesian_product = list(product(xs, ys))
     xs = np.array([x[0] for x in cartesian_product]).reshape(int(dims[0]), int(dims[1])).T
     ys = np.array([y[1] for y in cartesian_product]).reshape(int(dims[0]), int(dims[1])).T
@@ -181,7 +181,7 @@ def point_getter(solution,where_to_search):
     """ Returns a point.
     :param solution: the answer to the rectangle problem.
     :param where_to_search: coordinate to search
-    :return: value at given coordinate
+    :return: value at given coordinates
     """
     # 3- tuple passed in , numpy array stores data as (depth, row , cols ) or (z, y, x)
     # for more logic, view readme.
@@ -189,7 +189,7 @@ def point_getter(solution,where_to_search):
     try:
         point = solution[z][y][x]
     except IndexError:
-        return 'n/a'
+        return 'n/a' # placeholder
     return point
 
 # anvil server will remain open on my personal computer. This enables app interaction.
