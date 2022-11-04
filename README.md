@@ -18,5 +18,3 @@ This application and linked script is dynamic - differing user inputs for these 
 
 
 This app was built with [anvil](anvil.works), a browser based Python web app builder. For posterity purposes, the anvil app code is viewable above. This application is able to interact with a script on my personal computer through the use of [anvil-uplink](https://anvil.works/docs/uplink). Because of this, no requirements for different packages are needed for the client side app users as long as they have the web app link. 
-
-There is a consistent error during runtime, which I was unable to quell. It is caused by some interaction from passing the plotly object back to the app server, but is negligible to graph results. 
