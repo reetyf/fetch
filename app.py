@@ -5,6 +5,7 @@ import anvil.server
 import anvil.mpl_util
 import numpy as np
 import plotly.express as px
+import json
 
 # connects to anvil app server
 anvil.server.connect("OQH4NZ7ZDKJ6G676PZWGYT4H-6GXUPVRXW6A67APZ")
@@ -81,7 +82,7 @@ def pixel_placer(dims, corners):
     return final_coords
 
 
-def rectangle_checker(coords_list):
+def rectangle_checker(coords_list): 
     """
     Parses corner coordinate inputs to determine if it is a valid rectangle.
     :param coords_list: string representation of corner points
@@ -173,8 +174,8 @@ def plot(solution):
 
     # now, collected x,y points are easily passed into a scatterplot...
     fig = px.scatter(x=x_points, y=y_points, title="Illustration of Evenly Spaced Dots for Given Rectangle")
-    fig.show()
-    return fig
+    ret = fig.to_json()
+    return ret,json.loads(ret)['data'],json.loads(ret)['layout']
 
 @anvil.server.callable
 def point_getter(solution,where_to_search):
