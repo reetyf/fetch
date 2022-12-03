@@ -2,7 +2,6 @@ from ast import literal_eval
 from collections import Counter
 from itertools import product
 import anvil.server
-import anvil.mpl_util
 import numpy as np
 import plotly.express as px
 import json
